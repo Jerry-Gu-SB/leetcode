@@ -5,9 +5,9 @@
 # LRUCache initialization is just setting the global size variable and instantiating the dictionary
 # THIS IS SLOW BECAUSE REMOVE() RUNS IN LINEAR TIME
 class Node:
-    def __init__(self, key=None, value=None, next=None, prev=None):
+    def __init__(self, key=None, val=None, next=None, prev=None):
         self.key = key
-        self.value = value
+        self.val = val
         self.next = next
         self.prev = prev
 
@@ -21,28 +21,58 @@ class LinkedList:
 
 class LRUCache:
     def __init__(self, capacity: int):
-        LL = LinkedList()
-        LL.head = Node()
-        LL.tail = Node()
-        LL.head.next = LL.tail
-        LL.tail.prev = LL.head
+        self.LL = LinkedList()
+        self.LL.head = Node()
+        self.LL.tail = Node()
+        self.LL.head.next = self.LL.tail
+        self.LL.tail.prev = self.LL.head
 
-        dicto = {}
+        self.dicto = {}
         self.capacity = capacity
 
     def get(self, key: int) -> int:
+        if key in self.dicto:
+            # detach from current place
+            self.dicto[key].next.prev = self.dicto[key].prev
+            self.dicto[key].prev.next = self.dicto[key].next
+
+            # reattach to the end
+            self.dicto[key].prev = self.LL.tail.prev
+            self.LL.tail.prev.next = self.dicto[key]
+
+            self.LL.tail.prev = self.dicto[key]
+            self.dicto[key].next = self.LL.tail
+            return self.dicto[key].val
+        else:
+            return -1
 
     def put(self, key: int, value: int) -> None:
         if key in self.dicto:
+            self.dicto[key].val = value
 
+            # detach from current place
+            self.dicto[key].next.prev = self.dicto[key].prev
+            self.dicto[key].prev.next = self.dicto[key].next
+
+            # reattach to the end
+            self.dicto[key].prev = self.LL.tail.prev
+            self.LL.tail.prev.next = self.dicto[key]
+
+            self.LL.tail.prev = self.dicto[key]
+            self.dicto[key].next = self.LL.tail
         else:
-            new_node = Node(key, value, LL.tail, LL.tail.prev)
-            if self.capacity == LL.length:
+            new_node = Node(key, value, self.LL.tail, self.LL.tail.prev)
+            if self.capacity == self.LL.length:  # remove head.next
+                del self.dicto[self.LL.head.next.key]
+                self.LL.head.next.next.prev = self.LL.head
+                self.LL.head.next = self.LL.head.next.next
+            else:
+                self.LL.length += 1
+            self.LL.tail.prev.next = new_node
+            self.LL.tail.prev = new_node
+            self.dicto[key] = new_node
 
-            LL.tail.prev.next = new_node
-            LL.tail.prev = new_node
-
-        # from collections import defaultdict
+# from collections import defaultdict
 # class LRUCache:
 
 #     def __init__(self, capacity: int):
