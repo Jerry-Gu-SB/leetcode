@@ -24,30 +24,37 @@ class Solution:
         # edge cases: if new interval has no overlap. can be before, between, or after
         # before/after can be checked manually at the start
         # between has to be checked every iteration: current iterator doesn't overlap, new_int[0] > cur_int[1]
-        if newInterval[1] < intervals[0][0]:
-            intervals.insert(0, newInterval)
-            return intervals
-        elif newInterval[0] > intervals[-1][1]:
-            intervals.append(newInterval)
-            return invertals
 
         in_between = False
         subseq_interval = False
         solution = []
-        for i, cur_interval in enumerate(intervals):
+        temp_interval = [float("inf"), float("-inf")]
+        for cur_interval in intervals:
             if in_between:
                 solution.append(cur_interval)
                 continue
 
-            if not overlaps(cur_interval, newIntervali):
-                if newInterval[0] > cur_interval[1]:
-                    solution.append(newInterval)
-                    solution.append(curInterval)
+            if not overlaps(cur_interval, newInterval):
+                if subseq_interval and newInterval[0] > cur_interval[1]:
+                    solution.append(temp_interval)
+                    solution.append(cur_interval)
+                    in_between = True
+                elif subseq_interval:
+                    solution.append(temp_interval)
+                    solution.append(cur_interval)
                     in_between = True
                 else:
                     solution.append(cur_interval)
             else:
+                temp_interval[0] = min(cur_interval[0], newInterval[0], temp_interval[0])
+                temp_interval[1] = max(cur_interval[1], newInterval[1], temp_interval[1])
+                subseq_interval = True
 
-
-
-
+        if not subseq_interval or not in_between:
+            if newInterval[1] < intervals[0][0]:
+                intervals.insert(0, newInterval)
+                return intervals
+            elif newInterval[0] > intervals[-1][1]:
+                intervals.append(newInterval)
+                return invertals
+        return solution
