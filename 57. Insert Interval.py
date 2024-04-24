@@ -1,12 +1,16 @@
 class Solution:
     def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
+        if not intervals: return [newInterval]
+
         def overlaps(checked_interval, new_interval):
             # overlapping cases:
-            #   1. fully in between
+            #   1. other interval fully in between
             #   2. new interval goes over
             #   3. new interval goes under
+            print("overlap checking checked_interval: ", checked_interval, " new_interval: ", new_interval)
             if checked_interval[0] <= new_interval[0] <= checked_interval[1] or checked_interval[0] <= new_interval[
-                1] <= checked_interval[1]:
+                1] <= checked_interval[1] or (
+                    checked_interval[0] >= new_interval[0] and checked_interval[1] <= new_interval[1]):
                 return True
             else:
                 return False
@@ -30,25 +34,31 @@ class Solution:
         solution = []
         temp_interval = [float("inf"), float("-inf")]
         for cur_interval in intervals:
+            print(cur_interval)
             if in_between:
+                print("IN_BETWEEN")
                 solution.append(cur_interval)
                 continue
 
             if not overlaps(cur_interval, newInterval):
-                if subseq_interval and newInterval[0] > cur_interval[1]:
+                print("NOT OVERLAP")
+                # if subseq_interval and newInterval[0] > cur_interval[1]:
+                #     solution.append(temp_interval)
+                #     solution.append(cur_interval)
+                #     in_between = True
+                if subseq_interval:
+                    print("subsequent interval")
                     solution.append(temp_interval)
                     solution.append(cur_interval)
-                    in_between = True
-                elif subseq_interval:
-                    solution.append(temp_interval)
-                    solution.append(cur_interval)
-                    in_between = True
                 else:
+                    print("not sub interval")
                     solution.append(cur_interval)
             else:
+
                 temp_interval[0] = min(cur_interval[0], newInterval[0], temp_interval[0])
                 temp_interval[1] = max(cur_interval[1], newInterval[1], temp_interval[1])
                 subseq_interval = True
+                print("should be just merging intervals: ", temp_interval)
 
         if not subseq_interval or not in_between:
             if newInterval[1] < intervals[0][0]:
