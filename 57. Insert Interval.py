@@ -23,6 +23,8 @@ class Solution:
 
         solution = []
         overlapped = False
+        has_overlapped = False
+        new_interval_inserted = False
         temp_interval = [float('inf'), float('-inf')]
         for i, cur_interval in enumerate(intervals):
             if overlaps(cur_interval, newInterval):
@@ -35,6 +37,10 @@ class Solution:
                 if overlapped:
                     solution.append(temp_interval)
                     overlapped = False
+                    has_overlapped = True
+                elif not has_overlapped and newInterval[1] < cur_interval[0] and not new_interval_inserted:
+                    solution.append(newInterval)
+                    new_interval_inserted = True
                 solution.append(cur_interval)
 
         return solution
