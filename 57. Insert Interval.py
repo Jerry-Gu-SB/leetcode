@@ -1,49 +1,80 @@
 class Solution:
     def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
+        # just have a global iterator, and just while loop through that jit. you can just have 3 while loops in a row
+        # i feel???
+
+        # while newInt[0] > curInt[1]: append curInt
+        # while checked_interval[0] <= new_interval[0] <= checked_interval[1] or checked_interval[0] <= new_interval[1] <= checked_interval[1] or (checked_interval[0] >= new_interval[0] and checked_interval[1] <= new_interval[1])
+        #   temp_interval[0] = min(cur_interval[0], newInterval[0], temp_interval[0])
+        #   temp_interval[1] = max(cur_interval[1], newInterval[1], temp_interval[1])
+        # solution.append(temp_interval)
+        # while newInt[1] < curInt[0]: append curInt
+        # return solution
         if not intervals: return [newInterval]
-
-        def overlaps(checked_interval, new_interval):
-            # overlapping cases:
-            #   1. other interval fully in between
-            #   2. new interval goes over
-            #   3. new interval goes under
-            if checked_interval[0] <= new_interval[0] <= checked_interval[1] or checked_interval[0] <= new_interval[
-                1] <= checked_interval[1] or (
-                    checked_interval[0] >= new_interval[0] and checked_interval[1] <= new_interval[1]):
-                return True
-            else:
-                return False
-
-        if newInterval[1] < intervals[0][0]:
-            intervals.insert(0, newInterval)
-            return intervals
-        elif newInterval[0] > intervals[-1][1]:
-            intervals.append(newInterval)
-            return intervals
-
         solution = []
-        overlapped = False
-        has_overlapped = False
-        new_interval_inserted = False
-        temp_interval = [float('inf'), float('-inf')]
-        for i, cur_interval in enumerate(intervals):
-            if overlaps(cur_interval, newInterval):
-                temp_interval[0] = min(cur_interval[0], newInterval[0], temp_interval[0])
-                temp_interval[1] = max(cur_interval[1], newInterval[1], temp_interval[1])
-                overlapped = True
-                if (i == len(intervals) - 1):
-                    solution.append(temp_interval)
-            else:
-                if overlapped:
-                    solution.append(temp_interval)
-                    overlapped = False
-                    has_overlapped = True
-                elif not has_overlapped and newInterval[1] < cur_interval[0] and not new_interval_inserted:
-                    solution.append(newInterval)
-                    new_interval_inserted = True
-                solution.append(cur_interval)
+        temp_interval = [newInterval[0], newInterval[1]]
+        i = 0
+        while i < len(intervals) and newInterval[0] > intervals[i][1]:
+            solution.append(intervals[i])
+            i += 1
 
+        while (i < len(intervals) and (
+                intervals[i][0] <= newInterval[0] <= intervals[i][1] or intervals[i][0] <= newInterval[1] <=
+                intervals[i][1] or (intervals[i][0] >= newInterval[0] and intervals[i][1] <= newInterval[1]))):
+            print("temp interval: ", temp_interval, "intervals[i]: ", intervals[i])
+            temp_interval[0] = min(intervals[i][0], temp_interval[0], newInterval[0])
+            temp_interval[1] = max(intervals[i][1], temp_interval[1], newInterval[1])
+            i += 1
+
+        solution.append(temp_interval)
+        print(solution)
+        while i < len(intervals) and newInterval[1] < intervals[i][0]:
+            solution.append(intervals[i])
+            i += 1
         return solution
+
+        # if not intervals: return [newInterval]
+
+        # def overlaps(checked_interval, new_interval):
+        #     # overlapping cases:
+        #     #   1. other interval fully in between
+        #     #   2. new interval goes over
+        #     #   3. new interval goes under
+        #     if checked_interval[0] <= new_interval[0] <= checked_interval[1] or checked_interval[0] <= new_interval[1] <= checked_interval[1] or (checked_interval[0] >= new_interval[0] and checked_interval[1] <= new_interval[1]):
+        #         return True
+        #     else:
+        #         return False
+
+        # if newInterval[1] < intervals[0][0]:
+        #     intervals.insert(0, newInterval)
+        #     return intervals
+        # elif newInterval[0] > intervals[-1][1]:
+        #     intervals.append(newInterval)
+        #     return intervals
+
+        # solution = []
+        # overlapped = False
+        # has_overlapped = False
+        # new_interval_inserted = False
+        # temp_interval = [float('inf'), float('-inf')]
+        # for i, cur_interval in enumerate(intervals):
+        #     if overlaps(cur_interval, newInterval):
+        #         temp_interval[0] = min(cur_interval[0], newInterval[0], temp_interval[0])
+        #         temp_interval[1] = max(cur_interval[1], newInterval[1], temp_interval[1])
+        #         overlapped = True
+        #         if (i == len(intervals) - 1):
+        #             solution.append(temp_interval)
+        #     else:
+        #         if overlapped:
+        #             solution.append(temp_interval)
+        #             overlapped = False
+        #             has_overlapped = True
+        #         elif not has_overlapped and newInterval[1] < cur_interval[0] and not new_interval_inserted:
+        #             solution.append(newInterval)
+        #             new_interval_inserted = True
+        #         solution.append(cur_interval)
+
+        # return solution
 
         # iterate through intervals O(n)
         # if not overlapping: append to new interval list
