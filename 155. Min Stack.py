@@ -3,22 +3,23 @@ class MinStack:
     # mmmm you can just have a dictionary of the current min for each value inserted.
     def __init__(self):
         self.stack = []
-        self.min_dict = {}
-        self.cur_min = float("inf")
+        self.min_stack = []
+
     def push(self, val: int) -> None:
         self.stack.append(val)
-        self.cur_min = min(self.cur_min, val)
-        self.min_dict[len(self.stack)] = self.cur_min
+        if self.min_stack:
+            val = min(self.min_stack[-1], val)
+        self.min_stack.append(val)
 
     def pop(self) -> None:
         self.stack.pop()
+        self.min_stack.pop()
 
     def top(self) -> int:
         return self.stack[-1]
 
     def getMin(self) -> int:
-        return self.min_dict[len(self.stack)]
-
+        return self.min_stack[-1]
 
 # Your MinStack object will be instantiated and called as such:
 # obj = MinStack()
