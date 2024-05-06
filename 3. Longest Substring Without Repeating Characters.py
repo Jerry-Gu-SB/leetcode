@@ -1,10 +1,22 @@
 class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
-# i actually figured out that i'd need a sliding window, but i didn't
-# know how to know whether it was teh right approach. in this sense,
-# I could've done a bit better. you've seen the solution,
-# so recreate tomorrow.
+        # i actually figured out that i'd need a sliding window, but i didn't
+        # know how to know whether it was teh right approach. in this sense,
+        # I could've done a bit better. you've seen the solution,
+        # so recreate tomorrow.
+        if len(s) == 1: return 1
 
+        maxLen = 0
+        left = 0
+        charset = set()
+        for i, char in enumerate(s):
+            while char in charset:
+                charset.remove(s[left])
+                left += 1
+
+            charset.add(char)
+            maxLen = max(maxLen, i - left + 1)
+        return maxLen
 
 #         # oops i didn't read the question well enough
 #         # it's not without repeating characters, it's UNIQUE characters
