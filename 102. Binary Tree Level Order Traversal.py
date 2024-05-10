@@ -8,16 +8,23 @@ class Solution:
     def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
         # it's just BFS. so have a global variable that goes down, and just add the index
         # list at that level i think
+        if not root: return []
         solution = [[]]
         queue = [[root, 0]]
-        visited = []
-        while queue[0]:
+        # you actually dont need this, because you shouldn't visit the same place twice
+        # yeah commenting this out literally changes nothing
+        # visited = []
+        while queue:
+            # print(queue)
             cur = queue.pop(0)
             curNode = cur[0]
+            if not curNode: continue
             curLevel = cur[1]
-            if curNode.val not in visited:
-                solution[curLevel].append(curNode.val)
-            visited.append(curNode.val)
+            while len(solution) <= curLevel:
+                solution.append([])
+            # if curNode not in visited:
+            solution[curLevel].append(curNode.val)  # was originally tabbed in
+            # visited.append(curNode)
             queue.append([curNode.left, curLevel + 1])
             queue.append([curNode.right, curLevel + 1])
 
