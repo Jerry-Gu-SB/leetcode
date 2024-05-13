@@ -16,11 +16,39 @@ class Solution:
         # inary search in the right pivot slot.
 
         # or maybe just as simple as 1
+        # if nums[0] < nums[-1]:
+        #     # binary search
+        # else:
+        #     left = 0
+        #     right = len(nums)
+        #     mid = int((left + right)/2)
+        #     while left <= right:
 
-        if nums[0] < nums[-1]:
-            # binary search
-        else:
-            left = 0
-            right = len(nums)
-            mid = int((left + right)/2)
-            while left <= right:
+        # lmao so this actually works even though it's linear, guess the test cases aren't good enough
+        # return nums.index(target) if target in nums else -1
+
+        # basically what you missed is that the property that is conserved in the binary search
+        # is that the mid point to the end or beginning MUST be in order.
+        # so you just keep cutting it in half until you get to the point where the
+        # number is in an ordered part, but if not, then it should be in an
+        # unordered part
+
+        left = 0
+        right = len(nums) - 1
+
+        while left <= right:
+            mid = (left + right) // 2
+            if nums[mid] == target:
+                return mid
+
+            if nums[left] <= nums[mid]:
+                if nums[left] <= target < nums[mid]:
+                    right = mid - 1
+                else:
+                    left = mid + 1
+            else:
+                if nums[mid] < target <= nums[right]:
+                    left = mid + 1
+                else:
+                    right = mid - 1
+        return -1
