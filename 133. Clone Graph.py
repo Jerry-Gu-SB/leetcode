@@ -8,8 +8,6 @@ class Node:
 
 from typing import Optional
 from collections import defaultdict
-
-
 class Solution:
     def cloneGraph(self, node: Optional['Node']) -> Optional['Node']:
         # just kinda looks like a BFS
@@ -18,37 +16,18 @@ class Solution:
         # CLONE of the original node. it means likke actually clone and make new nodes
         # seems annoying. just use the values to check the queue visited, then return
         # cloned nodes
-        if not node: return []
-        if not node.neighbors: return [[]]
-        queue = [node]
-        adjacency = defaultdict(list)
-        visited = []
+        if not node: return None
+
+        queue = deque([node])
+        visited = {node.val: Node(node.val, [])}  # initializes dictionary typing
+
         while queue:
-            cur = queue.pop(0)
-            cur = Node(cur.val)
-            if cur.val not in visited:
-                visited.append(cur.val)
+            cur = queue.popleft()
+            cur_copy = visited[cur.val]
 
-                if not cur.neighbors: continue
-
-                for neighbor in cur.neighbors:
-                    neighbor = Node(neighbor.val)
-                    if neighbor.val not in visited:
-                        queue.append(neighbor.val)
-                    adjacency[cur].append(neighbor)
-        print(adjacency)
-        # solution = []
-        # for key in adjacency.keys():
-        #     print("key: ", key)
-        #     print("key values: ", adjacency[key])
-        #     while len(solution) < key:
-        #         solution.append([])
-        #     for val in adjacency[key]:
-        #         solution[key - 1].append(val)
-        # print(solution)
-        return adjacency[node]
-
-
-
-
-
+            for neighbor in cur.neighbors:
+                if neighbor.val not in visited:
+                    queue.append(neighbor)
+                    visited[neighbor.val] = Node(neighbor.val, [])
+                cur_copy.neighbors.append(visited[neighbor.val])
+        return visited[node.val]
