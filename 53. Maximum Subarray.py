@@ -1,5 +1,6 @@
 class Solution:
     def maxSubArray(self, nums: List[int]) -> int:
+
         # kadane's algorithm. this was kind of what i was getting at before,
         # convince yourself this works
 
@@ -15,17 +16,34 @@ class Solution:
         # so if you check 12345, when you check 1, 12, 123, 1234, 12345, you can recursively
         # check 23, 234, 2345 as well and then memoize for next iteration
 
-        grid = [[] for i in len(nums)]
+        # try flipping the triangle over to get a better visual
+        cur_sum = 0
+        solution = -inf
+        grid = [[] for i in range(len(nums))]
         for i in range(len(nums)):
+            for j in range(i, len(nums)):
+                # print(grid)
+                print("solution: ", solution)
+                print("cur_sum: ", cur_sum)
+                if i == 0:
+                    cur_sum += nums[j]
+                else:
+                    print("i: ", i, " j: ", j)
+                    cur_sum = grid[i - 1][j] - nums[i - 1]
+                grid[i].append(cur_sum)
+                solution = max(solution, cur_sum)
+        print(grid)
+        print("solution: ", solution)
+        return solution
 
-    # also you were trying to intuit the sliding window. you need to do more
-    # sliding window problems because you aren't recognizing that pattern.
-    # if not nums: return []
+        # also you were trying to intuit the sliding window. you need to do more
+        # sliding window problems because you aren't recognizing that pattern.
+        # if not nums: return []
 
-    # cur = 0
-    # solution = -inf
-    # for num in nums:
-    #     cur = max(num, cur + num)
-    #     solution = max(solution, cur)
+        # cur = 0
+        # solution = -inf
+        # for num in nums:
+        #     cur = max(num, cur + num)
+        #     solution = max(solution, cur)
 
-    # return solution
+        # return solution
