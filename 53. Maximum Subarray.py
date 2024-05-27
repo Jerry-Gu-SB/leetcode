@@ -17,6 +17,8 @@ class Solution:
         # check 23, 234, 2345 as well and then memoize for next iteration
 
         # try flipping the triangle over to get a better visual
+
+        # getting closer but need to write it down, can't do thsi in class..
         cur_sum = 0
         solution = -inf
         grid = [[] for i in range(len(nums))]
@@ -29,7 +31,7 @@ class Solution:
                     cur_sum += nums[j]
                 else:
                     print("i: ", i, " j: ", j)
-                    cur_sum = grid[i - 1][j] - nums[i - 1]
+                    cur_sum = grid[i - 1][0] - nums[j - 1]
                 grid[i].append(cur_sum)
                 solution = max(solution, cur_sum)
         print(grid)
