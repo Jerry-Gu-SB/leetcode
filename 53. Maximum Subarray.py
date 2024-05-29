@@ -20,7 +20,7 @@ class Solution:
 
         # getting closer but need to write it down, can't do thsi in class..
         cur_sum = 0
-        solution = -inf
+        solution = float("-inf")
         grid = [[] for i in range(len(nums))]
         for i in range(len(nums)):
             for j in range(i, len(nums)):
@@ -30,7 +30,7 @@ class Solution:
                 if i == 0:
                     cur_sum += nums[j]
                 else:
-                    print("i: ", i, " j: ", j)
+                    print("i: ", i,  " j:  ", j)
                     cur_sum = grid[i - 1][0] - nums[j - 1]
                 grid[i].append(cur_sum)
                 solution = max(solution, cur_sum)
