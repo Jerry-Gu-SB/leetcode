@@ -15,12 +15,16 @@ class Solution:
         # checking every subarray is just the smaller subarray plus an extra character
         # so if you check 12345, when you check 1, 12, 123, 1234, 12345, you can recursively
         # check 23, 234, 2345 as well and then memoize for next iteration
+        #      j:  0  1  2  3   4  5  6  7  8
+        # i:0     -2 -1 -4  0  -1  1  2 -3  1
+        #   1         1 -2  2   1  3  4 -1  3
+        #   2           -3  1   0  2  3 -2  2
 
         # try flipping the triangle over to get a better visual
 
         # getting closer but need to write it down, can't do thsi in class..
         cur_sum = 0
-        solution = float("-inf")
+        solution = -inf
         grid = [[] for i in range(len(nums))]
         for i in range(len(nums)):
             for j in range(i, len(nums)):
@@ -30,8 +34,8 @@ class Solution:
                 if i == 0:
                     cur_sum += nums[j]
                 else:
-                    print("i: ", i,  " j:  ", j)
-                    cur_sum = grid[i - 1][0] - nums[j - 1]
+                    print("i: ", i, " j: ", j)
+                    cur_sum = nums[j - i] - grid[i - 1][j - 1]
                 grid[i].append(cur_sum)
                 solution = max(solution, cur_sum)
         print(grid)
