@@ -1,6 +1,22 @@
 class Solution:
     def maxSubArray(self, nums: List[int]) -> int:
 
+
+
+        # brute force: look through every single subarray
+        # check current largest sum
+        # if it's bigger, then that's the new sum
+        # return largest sum
+        # sol = sum(nums)
+        # print(sol)
+        # for i in range(len(nums) + 1):
+        #     for j in range(len(nums) + 1):
+        #         if i < j:
+        #             cur_sum = sum(nums[i : j])
+        #             if cur_sum > sol:
+        #                 sol = cur_sum
+        # return sol
+
         # kadane's algorithm. this was kind of what i was getting at before,
         # convince yourself this works
 
