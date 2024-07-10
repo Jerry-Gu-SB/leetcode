@@ -19,25 +19,29 @@ class Solution:
                 return float('inf')
 
             if amount == 0: return 0
-            global memo
             memo = defaultdict(defaultVal)
             for coin in coins:
                 memo[coin] = 1
 
-            def rec(coin_list, target):
+            def rec(target):
                 if target in memo.keys():
                     return memo[target]
+                if target == 0:
+                    return 0
                 if target < 0:
-                    return float('-inf')
-                for coin in coin_list:
-                    temp = rec(coin_list, target - coin) + 1
-                    memo[target] = min(memo[target], temp)
+                    return float('inf')
+
+                min_coins = float('inf')
+                for coin in coins:
+                    temp = rec(target - coin)
+                    if temp != float('inf'):
+                        min_coins = min(min_coins, temp + 1)
+                memo[target] = min_coins
                 return memo[target]
 
-            sol = rec(coins, amount)
-            print(memo)
+            sol = rec(amount)
 
-            if sol <= 0:
+            if sol == float('inf'):
                 return -1
             return sol
 
