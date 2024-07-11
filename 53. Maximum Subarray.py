@@ -1,3 +1,17 @@
+# ah shit here we go again
+class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:
+
+
+# bottom up approach DP
+# must be 2D
+memo = [float('-inf') for num in nums]
+memo[0] = nums[0]
+for i in range(len(memo)):
+    max_subarray = float('-inf')
+    for j in range(len(memo)):
+
+
 class Solution:
     def maxSubArray(self, nums: List[int]) -> int:
 
