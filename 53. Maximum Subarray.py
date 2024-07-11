@@ -1,15 +1,28 @@
 # ah shit here we go again
+
+# MAN YOU ARE WAY OVERCOMPLICATING THIS. HOW IS THIS SO HARD??? look at the solutions tomorrow and relaly study them.
+# then rework the problem
 class Solution:
     def maxSubArray(self, nums: List[int]) -> int:
+        # bottom up approach DP
+        storage_memo = [[float('-inf') for num in nums] for num in nums]
+        for i in range(len(nums)):
+            storage_memo[i][i] = nums[i]
 
+        def dp(first, second):
+            print(first, second)
+            if storage_memo[first][second] == float('-inf'):
+                return storage_memo[first][second]
+            cur_max = float('-inf')
+            for i in range(len(nums)):
+                for j in range(len(nums)):
+                    cur_max = max(dp(i, j), cur_max, sum(nums[first: second]))
+            storage_memo[first][second] = cur_max
+            return cur_max
 
-# bottom up approach DP
-# must be 2D
-memo = [float('-inf') for num in nums]
-memo[0] = nums[0]
-for i in range(len(memo)):
-    max_subarray = float('-inf')
-    for j in range(len(memo)):
+        sol = dp(0, len(nums) - 1)
+        print(sol, storage_memo)
+        return sol
 
 
 class Solution:
