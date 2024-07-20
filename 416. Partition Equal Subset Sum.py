@@ -23,14 +23,20 @@ class Solution:
         # and if you don't find an answer, there is no answer actually.
 
         # OKAY WE KIDNA COOKIN BUT WE NEED TO MEMOIZE SOMEWHERE
-        def rec(target, numo):
-            if target < 0:
+
+        # WOW OKAY I WAS READY TO GIVE UP ON THIS PROBLEM BUT WE MADE A LOT OF PROGRESS
+        memo = []
+
+        def rec(target, index):
+            if target < 0 or index in memo:
                 return False
             elif target == 0:
                 return True
             sol = False
-            for i in range(len(numo)):
-                sol = rec(target - numo[i], numo[:i] + numo[i + 1:]) or sol
+            for i in range(len(nums)):
+                if i not in index:
+                    index.append(i)
+                    sol = rec(target - nums[i], index) or sol
             return sol
 
-        return rec(sum(nums) / 2, nums)
+        return rec(sum(nums) / 2, [])
