@@ -25,10 +25,10 @@ class Solution:
         # OKAY WE KIDNA COOKIN BUT WE NEED TO MEMOIZE SOMEWHERE
 
         # WOW OKAY I WAS READY TO GIVE UP ON THIS PROBLEM BUT WE MADE A LOT OF PROGRESS
-        memo = []
 
+        # yea okay i get a wall again. I think you can give max 1 more session, else just get the solution
         def rec(target, index):
-            if target < 0 or index in memo:
+            if target < 0:
                 return False
             elif target == 0:
                 return True
@@ -40,3 +40,7 @@ class Solution:
             return sol
 
         return rec(sum(nums) / 2, [])
+
+
+
+
