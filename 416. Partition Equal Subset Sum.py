@@ -27,6 +27,9 @@ class Solution:
         # WOW OKAY I WAS READY TO GIVE UP ON THIS PROBLEM BUT WE MADE A LOT OF PROGRESS
 
         # yea okay i get a wall again. I think you can give max 1 more session, else just get the solution
+
+        # okay your decision tree was all wrong. you iterate from the beginning and choose or not choose
+        # that number. the rest was okay with the subtraction it seemed. go from there now.
         def rec(target, index):
             if target < 0:
                 return False
@@ -35,11 +38,16 @@ class Solution:
             sol = False
             for i in range(len(nums)):
                 if i not in index:
+                    print(i, target, index)
                     index.append(i)
                     sol = rec(target - nums[i], index) or sol
             return sol
 
-        return rec(sum(nums) / 2, [])
+        if rec(sum(nums)):
+            for i in range(len(nums)):
+                if rec(sum(nums) / 2, [i]):
+                    return True
+        return False
 
 
 
