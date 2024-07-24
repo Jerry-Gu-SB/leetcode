@@ -28,26 +28,56 @@ class Solution:
 
         # yea okay i get a wall again. I think you can give max 1 more session, else just get the solution
 
+        # def rec(target, index):
+        #     if target < 0:
+        #         return False
+        #     elif target == 0:
+        #         return True
+        #     sol = False
+        #     for i in range(len(nums)):
+        #         if i not in index:
+        #             print(i, target, index)
+        #             index.append(i)
+        #             sol = rec(target - nums[i], index) or sol
+        #     return sol
+        # if rec(sum(nums))
+        # for i in range(len(nums)):
+        #     if rec(sum(nums) / 2, [i]):
+        #         return True
+        # return False
+
         # okay your decision tree was all wrong. you iterate from the beginning and choose or not choose
         # that number. the rest was okay with the subtraction it seemed. go from there now.
-        def rec(target, index):
+        global incremento
+        memo = [[]]
+        incremento = 0
+        targeto = sum(nums) / 2
+
+        def rec(target, numo):
+            global incremento
+            incremento += 1
+            # print(target, numo)
+            if target == 0:
+                return True
+            if numo in memo:
+                return False
             if target < 0:
                 return False
-            elif target == 0:
-                return True
+
             sol = False
-            for i in range(len(nums)):
-                if i not in index:
-                    print(i, target, index)
-                    index.append(i)
-                    sol = rec(target - nums[i], index) or sol
+            for i in range(len(numo)):
+                spliced = numo[:i] + numo[i + 1:]
+                if spliced in memo:
+                    continue
+                sol = sol or rec(target - numo[i], spliced) or rec(target, spliced)
+                memo.append(numo)
+                # print(sol)
             return sol
 
-        if rec(sum(nums)):
-            for i in range(len(nums)):
-                if rec(sum(nums) / 2, [i]):
-                    return True
-        return False
+        ret = rec(targeto, nums)
+        # print("incremento: " + str(incremento))
+        return ret
+
 
 
 
