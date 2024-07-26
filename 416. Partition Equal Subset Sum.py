@@ -48,37 +48,57 @@ class Solution:
 
         # okay your decision tree was all wrong. you iterate from the beginning and choose or not choose
         # that number. the rest was okay with the subtraction it seemed. go from there now.
-        global incremento
-        memo = [[]]
-        incremento = 0
-        targeto = sum(nums) / 2
+        # global incremento
+        # memo = [[]]
+        # incremento = 0
+        # targeto = sum(nums) / 2
+        # def rec(target, numo):
+        #     global incremento
+        #     incremento += 1
+        #     # print(target, numo)
+        #     if target == 0:
+        #         return True
+        #     if numo in memo:
+        #         return False
+        #     if target < 0:
+        #         return False
 
-        def rec(target, numo):
-            global incremento
-            incremento += 1
-            # print(target, numo)
-            if target == 0:
-                return True
-            if numo in memo:
-                return False
-            if target < 0:
-                return False
+        #     sol = False
+        #     for i in range(len(numo)):
+        #         spliced = numo[:i] + numo[i + 1 :]
+        #         if spliced in memo:
+        #             continue
+        #         sol = sol or rec(target - numo[i], spliced) or rec(target, spliced)
+        #         memo.append(numo)
+        #         # print(sol)
+        #     return sol
+        # ret = rec(targeto, nums)
+        # # print("incremento: " + str(incremento))
+        # return ret
 
-            sol = False
-            for i in range(len(numo)):
-                spliced = numo[:i] + numo[i + 1:]
-                if spliced in memo:
-                    continue
-                sol = sol or rec(target - numo[i], spliced) or rec(target, spliced)
-                memo.append(numo)
-                # print(sol)
-            return sol
+        # just finished the neetcode video, i would have never have arrived there.
+        # adding every single number, and then adding all the numbers to that to get
+        # all sums is actually genius, i would have never gotten that. that's so fucking smart man
+        # i'm a little mad and annoyed. I was just not thinking on that deep level.
+        if sum(nums) % 2 != 0: return False
 
-        ret = rec(targeto, nums)
-        # print("incremento: " + str(incremento))
-        return ret
+        target = sum(nums) / 2
 
+        dp = set()
+        dp.add(0)
+        for num in nums:
+            # print(target, nums)
+            temp = set()
+            if target in dp: return True
+            for numo in dp:
+                temp.add(numo + num)
+                temp.add(numo)
+            dp = temp
 
+        if target not in dp:
+            return False
+        else:
+            return True
 
 
 
