@@ -14,3 +14,12 @@ class Solution:
 
         # okay i think i actually have a good gameplan here. let's try and do this tomorrow or maybe the day after because i have to move tomorrow and idk what the heck's gonna happen.
 
+        dp = [[0 for j in range(n)] for i in range(m)]
+
+        for row in range(m):
+            for col in range(n):
+                if row == 0 or col == 0:
+                    dp[row][col] = 1
+                else:
+                    dp[row][col] = dp[row][col - 1] + dp[row - 1][col]
+        return dp[m - 1][n - 1]
