@@ -7,6 +7,8 @@ class Solution:
 
         # 3 var: solution, cur_prod, last_prod
         # did not account for 0. i guess if it's zero then you just compare with the solution and if it's bigger at that the zero then you just make it the solution.
+        if len(nums) == 1:
+            return nums[0]
         solution = float('-inf')
         temp = 0
         even = True
@@ -15,20 +17,37 @@ class Solution:
             if i == 0:
                 cur_prod = nums[i]
                 continue
+            print(i, ". ", cur_prod, temp, solution, even)
 
             if nums[i] == 0:
                 even = True
             elif nums[i] > 0:
                 cur_prod *= nums[i]
             elif nums[i] < 0:
-                if even:
+                if not even:
                     temp = cur_prod
-                    curprod = nums[i]
-                    even = False
-                else:
+                    cur_prod = nums[i]
                     even = True
-                    curprod *= temp
+                else:
+                    cur_prod *= temp
                     temp = 0
+                    even = False
             solution = max(solution, cur_prod)
-        return solution
+            print(i, ". ", cur_prod, temp, solution, even)
+        print("last:", cur_prod, temp, solution, even)
+        return max(solution, temp, cur_prod)
+
+        # brute force: check every subarray
+        # def prod(listo):
+        #     prod = 1
+        #     for num in listo:
+        #         prod *= num
+        #     return prod
+
+        # maxo = float('-inf')
+        # for i in range(len(nums)):
+        #     for j in range(i, len(nums) + 1):
+        #         if i < j:
+        #             maxo = max(maxo, prod(nums[i : j]))
+        # return maxo
 
