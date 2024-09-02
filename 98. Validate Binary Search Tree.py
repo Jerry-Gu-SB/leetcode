@@ -18,7 +18,21 @@ class Solution:
         if not root:
             return False
 
+        def recurse(range, node):
+            sol = True
+            if node:
+                # First recur on left child
+                sol = sol and recurse([range[0], node.val], node.left)
 
+                # the recur on right child
+                if not (range[0] < node.val < range[1]):
+                    sol = False
+
+                # now print the data of node
+                sol = sol and recurse([node.val, range[1]], node.right)
+            return sol
+
+        return recurse([float('-inf'), float('inf')], root)
 
 
 
